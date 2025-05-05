@@ -66,5 +66,13 @@ namespace TodoListApp
         {
             // You can add logic here to handle selection changes if needed
         }
+
+        private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                DragMove();
+            }
+        }
     }
 }

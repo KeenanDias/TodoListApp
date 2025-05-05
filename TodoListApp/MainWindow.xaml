@@ -5,11 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TodoListApp"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <ListBox x:Name="todoListbox" HorizontalAlignment="Left" Height="197" Margin="94,42,0,0" VerticalAlignment="Top" Width="605" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListBox_SelectionChanged" DisplayMemberPath="description"/>
-            <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Height="54" Margin="136,352,0,0" VerticalAlignment="Top" Width="162" Click="AddButton_Click"/>
-            <Button x:Name="removeBtn" Content="Remove" HorizontalAlignment="Left" Height="54" Margin="460,352,0,0" VerticalAlignment="Top" Width="162" Click="RemoveButton_Click"/>
-        <TextBox x:Name="AddItemTextBox" HorizontalAlignment="Left" Height="58" Margin="94,271,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="605"/>
+        Title="MainWindow" Height="300" Width="300"
+        ResizeMode="CanResizeWithGrip"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="LightGoldenrodYellow"
+        BorderBrush="DarkGoldenrod"
+        BorderThickness="2">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" Background="DarkGoldenrod" MouseDown="TitleBar_MouseDown" Padding="5">
+            <TextBlock Text="My Notes" Foreground="White" FontWeight="Bold"/>
+        </Border>
+
+        <Border Grid.Row="1" Background="WhiteSmoke" Margin="0,5,0,5" BorderBrush="LightGray" BorderThickness="1">
+            <ListBox x:Name="todoListbox"
+                     DisplayMemberPath="description"
+                     BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+        </Border>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBox x:Name="AddItemTextBox"
+                     Width="150"
+                     Margin="0,0,5,0"
+                     VerticalAlignment="Bottom"
+                     ToolTip="Enter new todo item"/>
+            <Button x:Name="addBtn"
+                    Content="Add"
+                    Width="60"
+                    Margin="0,0,5,0"
+                    Click="AddButton_Click"/>
+            <Button x:Name="removeBtn"
+                    Content="Remove"
+                    Width="60"
+                    Click="RemoveButton_Click"/>
+        </StackPanel>
     </Grid>
 </Window>
