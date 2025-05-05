@@ -1,0 +1,15 @@
+﻿<Window x:Class="TodoListApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:TodoListApp"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <ListBox x:Name="todoListbox" HorizontalAlignment="Left" Height="197" Margin="94,42,0,0" VerticalAlignment="Top" Width="605" d:ItemsSource="{d:SampleData ItemCount=5}" SelectionChanged="ListBox_SelectionChanged" DisplayMemberPath="description"/>
+            <Button x:Name="addBtn" Content="Add" HorizontalAlignment="Left" Height="54" Margin="136,352,0,0" VerticalAlignment="Top" Width="162" Click="AddButton_Click"/>
+            <Button x:Name="removeBtn" Content="Remove" HorizontalAlignment="Left" Height="54" Margin="460,352,0,0" VerticalAlignment="Top" Width="162" Click="RemoveButton_Click"/>
+        <TextBox x:Name="AddItemTextBox" HorizontalAlignment="Left" Height="58" Margin="94,271,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="605"/>
+    </Grid>
+</Window>
