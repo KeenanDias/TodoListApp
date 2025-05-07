@@ -34,7 +34,18 @@ namespace TodoListApp
             {
                 _context.Database.EnsureCreated();
                 _context.todoItems.Load(); // Load data into the local cache
-                todoListbox.ItemsSource = _context.todoItems.Local.ToObservableCollection();
+                todoPanel.Children.Clear(); // Clear any existing checkboxes
+                foreach (var item in _context.todoItems.Local)
+                {
+                    CheckBox checkBox = new CheckBox();
+                    checkBox.Content = item.description;
+                    checkBox.IsChecked = false; // Initialize as not completed
+                    checkBox.Margin = new Thickness(5);
+                    checkBox.Tag = item; // Store the todoItem object in the Tag
+                    checkBox.Checked += CheckBox_Checked; // Attach event handler
+                    checkBox.Unchecked += CheckBox_Unchecked;
+                    todoPanel.Children.Add(checkBox);
+                }
             }
             catch (Exception ex)
             {
@@ -49,22 +60,66 @@ namespace TodoListApp
                 var newItem = new todoItems { description = AddItemTextBox.Text };
                 _context.todoItems.Add(newItem);
                 _context.SaveChanges();
+
+                CheckBox checkBox = new CheckBox();
+                checkBox.Content = newItem.description;
+                checkBox.IsChecked = false;
+                checkBox.Margin = new Thickness(5);
+                checkBox.Tag = newItem; // Store the new item
+                checkBox.Checked += CheckBox_Checked;
+                checkBox.Unchecked += CheckBox_Unchecked;
+                todoPanel.Children.Add(checkBox);
                 AddItemTextBox.Clear();
             }
         }
 
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (todoListbox.SelectedItem is todoItems selectedItem)
+            List<CheckBox> checkedBoxes = new List<CheckBox>();
+            foreach (UIElement element in todoPanel.Children)
             {
-                _context.todoItems.Remove(selectedItem);
-                _context.SaveChanges();
+                if (element is CheckBox checkBox && checkBox.IsChecked == true)
+                {
+                    checkedBoxes.Add(checkBox);
+                }
+            }
+
+            foreach (CheckBox checkBox in checkedBoxes)
+            {
+                if (checkBox.Tag is todoItems itemToRemove)
+                {
+                    _context.todoItems.Remove(itemToRemove);
+                    todoPanel.Children.Remove(checkBox); // Remove the checkbox
+                }
+            }
+            _context.SaveChanges();
+            LoadTodoItems(); //refresh
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            if (sender is CheckBox checkBox)
+            {
+                checkBox.Foreground = Brushes.Gray;
+                TextBlock textBlock = new TextBlock
+                {
+                    Text = checkBox.Content.ToString(),
+                    TextDecorations = TextDecorations.Strikethrough
+                };
+                checkBox.Content = textBlock;
             }
         }
 
-        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CheckBox_Unchecked(object sender, RoutedEventArgs e)
         {
-            // You can add logic here to handle selection changes if needed
+            if (sender is CheckBox checkBox)
+            {
+                checkBox.Foreground = Brushes.Black;
+                if (checkBox.Content is TextBlock textBlock)
+                {
+                    checkBox.Content = textBlock.Text;
+                }
+            }
         }
 
         private void TitleBar_MouseDown(object sender, MouseButtonEventArgs e)

@@ -24,10 +24,10 @@
         </Border>
 
         <Border Grid.Row="1" Background="WhiteSmoke" Margin="0,5,0,5" BorderBrush="LightGray" BorderThickness="1">
-            <ListBox x:Name="todoListbox"
-                     DisplayMemberPath="description"
-                     BorderThickness="0"
-                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"/>
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="todoPanel" Orientation="Vertical">
+                </StackPanel>
+            </ScrollViewer>
         </Border>
 
         <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right">
